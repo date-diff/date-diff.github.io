@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date-Diff Tests</title>
+    <script src="date-diff.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .test {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        .pass {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .fail {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <h1>Date-Diff Web Component Tests</h1>
+    <div id="tests"></div>
+
+    <script>
+        // Wait for custom element to be defined
+        customElements.whenDefined('date-diff').then(() => {
+            runTests();
+        });
+
+        function runTests() {
+            const tests = [
+                {
+                    name: 'Days between specific dates (Jan 1 to Dec 31, 2024)',
+                    attributes: { from: '2024-01-01', to: '2024-12-31' },
+                    expected: '365 days'
+                },
+                {
+                    name: 'Years between dates (2000 to 2024)',
+                    attributes: { from: '2000-01-01', to: '2024-01-01', years: '' },
+                    expected: '24 years'
+                },
+                {
+                    name: 'No attributes (today to today)',
+                    attributes: {},
+                    expected: '0 days'
+                },
+                {
+                    name: 'Only from attribute (past date to today)',
+                    attributes: { from: '2024-01-01' },
+                    expectedContains: 'days'
+                },
+                {
+                    name: 'Only to attribute (today to future/past date)',
+                    attributes: { to: '2024-12-31' },
+                    expectedContains: 'days'
+                },
+                {
+                    name: 'Days attribute explicit',
+                    attributes: { from: '2024-01-01', to: '2024-01-31', days: '' },
+                    expected: '30 days'
+                },
+                {
+                    name: 'One year difference',
+                    attributes: { from: '2023-01-01', to: '2024-01-01', years: '' },
+                    expected: '1 year'
+                },
+                {
+                    name: 'One day difference',
+                    attributes: { from: '2024-01-01', to: '2024-01-02' },
+                    expected: '1 day'
+                }
+            ];
+
+            const testsContainer = document.getElementById('tests');
+            let passed = 0;
+            let failed = 0;
+
+            tests.forEach(test => {
+                const element = document.createElement('date-diff');
+                for (let attr in test.attributes) {
+                    element.setAttribute(attr, test.attributes[attr]);
+                }
+                
+                // Append to a temporary container for rendering
+                const tempContainer = document.createElement('div');
+                tempContainer.style.display = 'none';
+                document.body.appendChild(tempContainer);
+                tempContainer.appendChild(element);
+                
+                // Wait a bit for the component to render
+                setTimeout(() => {
+                    const result = element.innerHTML.trim();
+                    const testDiv = document.createElement('div');
+                    testDiv.className = 'test';
+                    
+                    let success = false;
+                    if (test.expected) {
+                        success = result === test.expected;
+                    } else if (test.expectedContains) {
+                        success = result.includes(test.expectedContains);
+                    }
+                    
+                    if (success) {
+                        testDiv.classList.add('pass');
+                        passed++;
+                    } else {
+                        testDiv.classList.add('fail');
+                        failed++;
+                    }
+                    
+                    testDiv.innerHTML = `
+                        <strong>${success ? '✓' : '✗'} ${test.name}</strong><br>
+                        Expected: ${test.expected || test.expectedContains}<br>
+                        Got: ${result}
+                    `;
+                    testsContainer.appendChild(testDiv);
+                    
+                    // Add summary after last test
+                    if (testsContainer.children.length === tests.length) {
+                        const summary = document.createElement('div');
+                        summary.style.marginTop = '20px';
+                        summary.style.padding = '10px';
+                        summary.style.fontWeight = 'bold';
+                        summary.innerHTML = `
+                            Tests: ${tests.length} | Passed: ${passed} | Failed: ${failed}
+                        `;
+                        testsContainer.appendChild(summary);
+                    }
+                }, 100);
+            });
+        }
+    </script>
+</body>
+</html>
