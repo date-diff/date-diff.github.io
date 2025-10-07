@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>&lt;date-diff&gt; Web Component Demo</title>
+    <script src="date-diff.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .demo-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .demo-section h2 {
+            margin-top: 0;
+            color: #555;
+            font-size: 1.2em;
+        }
+        date-diff {
+            display: inline-block;
+            font-weight: bold;
+            color: #0066cc;
+            padding: 5px 10px;
+            background-color: #e6f2ff;
+            border-radius: 3px;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        .example {
+            margin: 15px 0;
+        }
+        .example-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>&lt;date-diff&gt; Web Component</h1>
+    <p>A simple Web Component that displays the difference between two dates in days or years.</p>
+
+    <div class="demo-section">
+        <h2>Basic Examples</h2>
+        
+        <div class="example">
+            <span class="example-label">Days from a past date to today:</span>
+            <date-diff from="2024-01-01"></date-diff>
+            <br><code>&lt;date-diff from="2024-01-01"&gt;&lt;/date-diff&gt;</code>
+        </div>
+
+        <div class="example">
+            <span class="example-label">Days from today to a future date:</span>
+            <date-diff to="2024-12-31"></date-diff>
+            <br><code>&lt;date-diff to="2024-12-31"&gt;&lt;/date-diff&gt;</code>
+        </div>
+
+        <div class="example">
+            <span class="example-label">Days between two specific dates:</span>
+            <date-diff from="2024-01-01" to="2024-12-31"></date-diff>
+            <br><code>&lt;date-diff from="2024-01-01" to="2024-12-31"&gt;&lt;/date-diff&gt;</code>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2>Using Years</h2>
+        
+        <div class="example">
+            <span class="example-label">Years from birth date to today:</span>
+            <date-diff from="1990-01-01" years></date-diff>
+            <br><code>&lt;date-diff from="1990-01-01" years&gt;&lt;/date-diff&gt;</code>
+        </div>
+
+        <div class="example">
+            <span class="example-label">Years between two dates:</span>
+            <date-diff from="2000-01-01" to="2024-01-01" years></date-diff>
+            <br><code>&lt;date-diff from="2000-01-01" to="2024-01-01" years&gt;&lt;/date-diff&gt;</code>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2>Edge Cases</h2>
+        
+        <div class="example">
+            <span class="example-label">No attributes (0 days - today to today):</span>
+            <date-diff></date-diff>
+            <br><code>&lt;date-diff&gt;&lt;/date-diff&gt;</code>
+        </div>
+
+        <div class="example">
+            <span class="example-label">Negative difference (past date):</span>
+            <date-diff from="2025-01-01" to="2024-01-01"></date-diff>
+            <br><code>&lt;date-diff from="2025-01-01" to="2024-01-01"&gt;&lt;/date-diff&gt;</code>
+        </div>
+
+        <div class="example">
+            <span class="example-label">Explicit days attribute:</span>
+            <date-diff from="2024-01-01" to="2024-01-31" days></date-diff>
+            <br><code>&lt;date-diff from="2024-01-01" to="2024-01-31" days&gt;&lt;/date-diff&gt;</code>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2>Usage</h2>
+        <p>Include the script in your HTML:</p>
+        <code>&lt;script src="date-diff.js"&gt;&lt;/script&gt;</code>
+        
+        <p style="margin-top: 15px;">Then use the component:</p>
+        <code>&lt;date-diff from="2024-01-01" to="2024-12-31"&gt;&lt;/date-diff&gt;</code>
+        
+        <h3>Attributes</h3>
+        <ul>
+            <li><strong>from</strong>: Start date (ISO format: YYYY-MM-DD). Defaults to today.</li>
+            <li><strong>to</strong>: End date (ISO format: YYYY-MM-DD). Defaults to today.</li>
+            <li><strong>years</strong>: Display difference in years (boolean attribute)</li>
+            <li><strong>days</strong>: Display difference in days (boolean attribute, default)</li>
+        </ul>
+    </div>
+</body>
+</html>
